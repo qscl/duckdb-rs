@@ -18,12 +18,12 @@ categories = ["database"]
 name = "duckdb"
 
 [workspace]
-members = ["libduckdb-sys"]
+members = ["libduckdb-sys-queryscript"]
 
 [features]
 default = []
-bundled = ["libduckdb-sys/bundled"]
-buildtime_bindgen = ["libduckdb-sys/buildtime_bindgen"]
+bundled = ["libduckdb-sys-queryscript/bundled"]
+buildtime_bindgen = ["libduckdb-sys-queryscript/buildtime_bindgen"]
 modern-full = [
     "chrono",
     "serde_json",
@@ -67,8 +67,8 @@ tempdir = "0.3.7"
 # name = "data_types"
 # harness = false
 
-[dependencies.libduckdb-sys]
-path = "libduckdb-sys"
+[dependencies.libduckdb-sys-queryscript]
+path = "libduckdb-sys-queryscript"
 version = "0.6.1"
 
 [package.metadata.docs.rs]

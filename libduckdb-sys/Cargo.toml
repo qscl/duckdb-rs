@@ -1,5 +1,5 @@
 [package]
-name = "libduckdb-sys"
+name = "libduckdb-sys-queryscript"
 version = "0.6.1"
 authors = ["wangfenjin <wangfenj@gmail.com>"]
 edition = "2021"

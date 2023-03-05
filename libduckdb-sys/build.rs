@@ -60,20 +60,42 @@ mod build_bundled {
             fs::copy(format!("{}/bindgen_bundled_version.rs", lib_name), out_path)
                 .expect("Could not copy bindings to output directory");
         }
-        println!("cargo:rerun-if-changed={}/duckdb.hpp", lib_name);
-        println!("cargo:rerun-if-changed={}/duckdb.cpp", lib_name);
+
+        let cpp_files = [
+            "duckdb.cpp",
+            "httpfs-extension.cpp",
+            "crypto.cpp",
+            "httpfs-extension.cpp",
+            "s3fs.cpp",
+        ];
+
+        let header_files = [
+            "duckdb.hpp",
+            "httpfs-extension.hpp",
+            "crypto.hpp",
+            "httpfs-extension.hpp",
+            "s3fs.hpp",
+        ];
+
+        for f in header_files.iter().chain(cpp_files.iter()) {
+            println!("cargo:rerun-if-changed={}/{}", lib_name, f);
+        }
         let mut cfg = cc::Build::new();
-        cfg.file(format!("{}/duckdb.cpp", lib_name))
-            .cpp(true)
-            .flag_if_supported("-std=c++11")
-            .flag_if_supported("-stdlib=libc++")
-            .flag_if_supported("-stdlib=libstdc++")
-            .flag_if_supported("/bigobj")
-            .warnings(false);
+
+        for f in cpp_files {
+            cfg.file(format!("{}/{}", lib_name, f))
+                .cpp(true)
+                .flag_if_supported("-std=c++11")
+                .flag_if_supported("-stdlib=libc++")
+                .flag_if_supported("-stdlib=libstdc++")
+                .flag_if_supported("/bigobj")
+                .warnings(false);
+        }
 
         if win_target() {
             cfg.define("DUCKDB_BUILD_LIBRARY", None);
         }
+        cfg.define("BUILD_HTTPFS_EXTENSION", Some("1"));
 
         cfg.compile(lib_name);
 
