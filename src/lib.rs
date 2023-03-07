@@ -55,7 +55,7 @@
 //! ```
 #![warn(missing_docs)]
 
-pub use libduckdb_sys as ffi;
+pub use libduckdb_sys_queryscript as ffi;
 
 use std::cell::RefCell;
 use std::convert;
